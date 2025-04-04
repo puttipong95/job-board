@@ -27,6 +27,8 @@ import {
 import { countryList } from "@/app/utils/countriesList";
 import SalaryRangeSelector from "../general/SalaryRangeSelector";
 import { JobDescriptionEditor } from "../richTextEditor/JobDescriptionEditor";
+import { BenefitsSelector } from "../general/BenefitsSelector";
+import { Textarea } from "../ui/textarea";
 
 const CreateJobForm = () => {
   const form = useForm<z.infer<typeof jobSchema>>({
@@ -165,13 +167,136 @@ const CreateJobForm = () => {
                   <FormItem>
                     <FormLabel>Job Description</FormLabel>
                     <FormControl>
-                      <JobDescriptionEditor />
+                      <JobDescriptionEditor field={field as any} />
                     </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="benefits"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Benefits</FormLabel>
+                    <FormControl>
+                      <BenefitsSelector field={field as any} />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </CardContent>
           </CardHeader>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Company Information</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="companyName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Company name..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="companyLocation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Location</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Location" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Worldwide</SelectLabel>
+                          <SelectItem value="worldwide">
+                            <span>W</span>
+                            <span className="pl-2">Worldwide / Remote</span>
+                          </SelectItem>
+                        </SelectGroup>
+                        <SelectGroup>
+                          <SelectLabel>Location</SelectLabel>
+                          {countryList.map((county) => (
+                            <SelectItem key={county.code} value={county.name}>
+                              <span>{county.flagEmoji}</span>
+                              <span className="pl-2">{county.name}</span>
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="companyWebsite"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Websit</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Company website..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="companyXAccount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company X Account</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Company x account..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="companyAbout"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Say something for your company..."
+                      {...field}
+                      className="min-h-[120px]"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
         </Card>
       </form>
     </Form>
